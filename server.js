@@ -8,7 +8,6 @@ const PORT = process.env.PORT || 3001;
 
 require('dotenv').config();
 
-
 const app = express();
 
 app.use(logger("dev"));
@@ -19,12 +18,14 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-// mongoose.connect(MONGODB_URI, {
+// mongoose.connect(MONGODB_URI,  {
 //   useNewUrlParser: true,
 //   useFindAndModify: false
 // });
+
 mongoose.connect(process.env.MONGODB_URI, function (err) {
   console.log('connected to mongodb')
+  
 });
 
 // routes
