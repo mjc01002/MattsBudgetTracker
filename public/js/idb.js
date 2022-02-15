@@ -1,13 +1,7 @@
-const indexedDB =
-  window.indexedDB ||
-  window.mozIndexedDB ||
-  window.webkitIndexedDB ||
-  window.msIndexedDB ||
-  window.shimIndexedDB;
 
 let db;
 
-const request = indexedDB.open('budget', 1);
+const request = indexedDB.open('budget_tracker', 1);
 
 
 request.onupgradeneeded = function(event) {
@@ -15,7 +9,7 @@ request.onupgradeneeded = function(event) {
 
     const db = event.target.result;
 
-    db.createObjectStore('budget', { autoIncrement: true });
+    db.createObjectStore('new_transaction', { autoIncrement: true });
 };
 
 request.onsuccess = function(event) {
@@ -34,15 +28,15 @@ request.onerror = function(event) {
 function saveRecord(record) {
 
     
-    const transaction = db.transaction(['budget'], 'readwrite');
-    const  budgetObjectStore = transaction.objectStore('budget');
+    const transaction = db.transaction(['new_transaction'], 'readwrite');
+    const  budgetObjectStore = transaction.objectStore('new_transaction');
     budgetObjectStore.add(record);
 }
 
 function uploadTransaction() {
 
-    const transaction = db.transaction(['budget'], 'readwrite');
-    const budgetObjectStore = transaction.objectStore('budget');
+    const transaction = db.transaction(['new_transaction'], 'readwrite');
+    const budgetObjectStore = transaction.objectStore('new_transaction');
     const getAll = budgetObjectStore.getAll();
 
     getAll.onsuccess = function() {
@@ -62,8 +56,8 @@ function uploadTransaction() {
                         throw new Error(serverResponse);
                     }
 
-                    const transaction = db.transaction(['budget'], 'readwrite');
-                    const budgetObjectStore = transaction.objectStore('budget');
+                    const transaction = db.transaction(['new_transaction'], 'readwrite');
+                    const budgetObjectStore = transaction.objectStore('new_transaction');
                     budgetObjectStore.clear();
 
                     alert('All saved transactions has been submitted!');
